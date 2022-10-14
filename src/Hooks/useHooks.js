@@ -1,1 +1,0 @@
-// hook are available in the global scope
