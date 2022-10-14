@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
-import { AiOutlineFire } from "react-icons/ai";
 import { CgMenuLeft } from "react-icons/cg";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
@@ -8,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { BiLogInCircle } from "react-icons/bi";
 import auth from "../../Auth/Firebase/Firebase.config";
 import { InitializeContext } from "../../App";
+import logo from '../../Assets/logo.jpg'
 
 export default function Navbar() {
   const { handleThemeChange, theme } = useContext(InitializeContext);
@@ -65,8 +65,8 @@ export default function Navbar() {
   return (
     <div className="sticky top-0 w-full z-50">
       <div
-        className={`drawer-content flex flex-col bg-base-300 ${
-          scrollY > 100 && "glass duration-500"
+        className={`drawer-content flex flex-col bg-base-100 ${
+          scrollY > 100 && "shadow-md duration-500"
         }`}
         style={
           pathname.includes("dashboard")
@@ -88,11 +88,11 @@ export default function Navbar() {
               </ul>
             </div>
             <Link
-              className="btn btn-ghost normal-case text-xl flex gap-2 items-center"
+              className="normal-case text-xl flex gap-2 items-center"
               to="/"
             >
-              <AiOutlineFire className="hidden md:block text-2xl" />
-              <span className="ml-[-17px] md:ml-0 lg:ml-0">Settyl</span>
+              <img src={logo} alt="" className="w-10 rounded-full"/>
+              <span className="ml-[-2px] md:ml-0 lg:ml-0">Settyl</span>
             </Link>
           </div>
           <div className="navbar-center hidden lg:flex">

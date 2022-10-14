@@ -52,7 +52,7 @@ export default function EmployeeCard({ employee, refetch }) {
   const [employeeAge, setEmployeeAge] = useState("");
   const [employeeImage, setEmployeeImage] = useState("");
 
-  console.log(employeeName, employeeSalary, employeeAge, employeeImage);
+  // console.log(employeeName, employeeSalary, employeeAge, employeeImage);
 
   const handleUpdateStock = async (event) => {
     event.preventDefault();

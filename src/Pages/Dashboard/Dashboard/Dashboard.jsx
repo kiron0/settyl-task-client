@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import auth from "../../../Auth/Firebase/Firebase.config";
 import useTitle from "../../../Hooks/useTitle";
-import { AiOutlineFire } from "react-icons/ai";
+import logo from "../../../Assets/logo.jpg";
 import { InitializeContext } from "../../../App";
 import Loading from "../../../Components/Loading/Loading";
 
@@ -119,7 +119,7 @@ const Dashboard = () => {
               to="/"
               className="logo font-semibold text-center flex items-center flex-col gap-2"
             >
-              <AiOutlineFire className="text-3xl" />
+              <img src={logo} alt="" className="w-10 rounded-full"/>
               Settyl
             </Link>
             <div
