@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FiDelete } from "react-icons/fi";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -6,6 +6,17 @@ import Swal from "sweetalert2";
 import { BASE_API } from "../../../config";
 
 export default function EmployeeCard({ employee, refetch }) {
+  const {
+    employee_name,
+    employee_salary,
+    employee_age,
+    profile_image,
+    gender,
+    _id,
+  } = employee;
+  const [editData, setEditData] = useState({});
+
+  console.log(editData);
   const handleDelete = (id) => {
     Swal.fire({
       text: "Are you sure you want to delete this?",
@@ -16,7 +27,7 @@ export default function EmployeeCard({ employee, refetch }) {
       confirmButtonText: "Yes, Delete it!",
     }).then((result) => {
       if (result.value) {
-        fetch(`${BASE_API}/api/v1/employees/${id}`, {
+        fetch(`${BASE_API}/employees/${id}`, {
           method: "DELETE",
           headers: {
             authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -35,6 +46,39 @@ export default function EmployeeCard({ employee, refetch }) {
       }
     });
   };
+
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeSalary, setEmployeeSalary] = useState("");
+  const [employeeAge, setEmployeeAge] = useState("");
+  const [employeeImage, setEmployeeImage] = useState("");
+
+  console.log(employeeName, employeeSalary, employeeAge, employeeImage);
+
+  const handleUpdateStock = async (event) => {
+    event.preventDefault();
+
+    await fetch(`${BASE_API}/employees/${editData._id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        employee_name: employeeName || editData?.employee_name,
+        employee_salary: employeeSalary || editData?.employee_salary,
+        employee_age: employeeAge || editData?.employee_age,
+        profile_image: employeeImage || editData?.profile_image,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if (result.modifiedCount) {
+          refetch();
+          toast.success(
+            `${editData?.employee_name} product updated successfully`
+          );
+          setEditData(null);
+        }
+      });
+  };
+
   return (
     <div className="card w-100 bg-base-100 shadow-xl">
       <div className="card-body">
@@ -64,11 +108,96 @@ export default function EmployeeCard({ employee, refetch }) {
           >
             <FiDelete className="text-lg text-white" />
           </div>
-          <div className="btn btn-sm">
+          <label
+            className="btn btn-sm"
+            for="editEmployee"
+            onClick={() =>
+              setEditData({
+                _id,
+                employee_name,
+                employee_salary,
+                employee_age,
+                profile_image,
+                gender,
+              })
+            }
+          >
             <AiOutlineEdit className="text-xl text-white" />
-          </div>
+          </label>
         </div>
       </div>
+      {editData && (
+        <>
+          <input type="checkbox" id="editEmployee" className="modal-toggle" />
+          <div className="modal modal-bottom sm:modal-middle">
+            <div className="modal-box relative">
+              <label
+                htmlFor="editEmployee"
+                className="btn btn-sm btn-circle absolute right-2 top-2"
+              >
+                ✕
+              </label>
+              <h3 className="text-lg font-bold">{editData?.productName}</h3>
+              <p>Update Employee data from here</p>
+              <form onSubmit={handleUpdateStock} className="my-2">
+                <div className="my-4">
+                  <label htmlFor="stock">Update Employee Name</label>
+                  <input
+                    type="text"
+                    placeholder="Put Employee Name"
+                    className="input input-bordered w-full my-3"
+                    id="stock"
+                    defaultValue={editData?.employee_name}
+                    onChange={(event) => setEmployeeName(event.target.value)}
+                  />
+                </div>
+                <div className="my-4">
+                  <label htmlFor="stock">Update Employee Salary</label>
+                  <input
+                    type="number"
+                    placeholder="Put Employee Salary"
+                    className="input input-bordered w-full my-3"
+                    id="stock"
+                    defaultValue={editData?.employee_salary}
+                    onChange={(event) => setEmployeeSalary(event.target.value)}
+                  />
+                </div>
+                <div className="my-4">
+                  <label htmlFor="stock">Update Employee Age</label>
+                  <input
+                    type="number"
+                    placeholder="Put Employee Age"
+                    className="input input-bordered w-full my-3"
+                    id="stock"
+                    defaultValue={editData?.employee_age}
+                    onChange={(event) => setEmployeeAge(event.target.value)}
+                  />
+                </div>
+                {/* <div className="my-4">
+                  <label htmlFor="stock">Update Employee Gender</label>
+                  <select className="select select-bordered w-full my-3">
+                    <option>{editData?.gender}</option>
+                  </select>
+                </div> */}
+                <div className="my-4">
+                  <label htmlFor="stock">Update Employee Profile Image</label>
+                  <input
+                    type="text"
+                    placeholder="Put Employee Profile Image"
+                    className="input input-bordered w-full my-3"
+                    id="stock"
+                    defaultValue={editData?.profile_image}
+                    onChange={(event) => setEmployeeImage(event.target.value)}
+                  />
+                </div>
+                <div className="text-right">
+                  <button className="btn text-white">Update Data</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
