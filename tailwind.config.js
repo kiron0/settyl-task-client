@@ -24,5 +24,5 @@ module.exports = {
       "night"
     ],
   },
-  plugins: [require("daisyui") , require('@tailwindcss/typography')] ,
+  plugins: [require("daisyui")] ,
 }
