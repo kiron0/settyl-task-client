@@ -47,8 +47,8 @@ export default function AddEmployees() {
   const saveProductOnMongodb = async (image, data) => {
     const productData = {
       employee_name: data?.employeeName,
-      employee_salary: data?.employeeSalary,
-      employee_age: data?.employeeAge,
+      employee_salary: Number(data?.employeeSalary),
+      employee_age: Number(data?.employeeAge),
       gender: data?.employeeGender,
       profile_image: image,
       createdAt:

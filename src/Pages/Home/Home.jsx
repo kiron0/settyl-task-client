@@ -31,7 +31,7 @@ export default function Home() {
               Network and collaborate using Settyl's platform to entail one's
               fair share in the integrated business environment and accomplish
               your chores. <br /><br/>
-              Learn more : https://www.settyl.com
+              Learn more : <a href="https://www.settyl.com" target="_blank" rel="noreferrer" className="hover:text-primary duration-500">https://www.settyl.com</a>
             </p>
           </div>
         </div>

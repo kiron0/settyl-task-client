@@ -16,7 +16,6 @@ export default function EmployeeCard({ employee, refetch }) {
   } = employee;
   const [editData, setEditData] = useState({});
 
-  console.log(editData);
   const handleDelete = (id) => {
     Swal.fire({
       text: "Are you sure you want to delete this?",
@@ -54,25 +53,29 @@ export default function EmployeeCard({ employee, refetch }) {
 
   // console.log(employeeName, employeeSalary, employeeAge, employeeImage);
 
-  const handleUpdateStock = async (event) => {
-    event.preventDefault();
+  const handleUpdateData = async (e) => {
+    e.preventDefault();
+
+    const updatedData = {
+      employee_name: employeeName || editData?.employee_name,
+      employee_salary: Number(employeeSalary) || editData?.employee_salary,
+      employee_age: Number(employeeAge) || editData?.employee_age,
+      profile_image: employeeImage || editData?.profile_image,
+    };
 
     await fetch(`${BASE_API}/employees/${editData._id}`, {
       method: "PATCH",
-      body: JSON.stringify({
-        employee_name: employeeName || editData?.employee_name,
-        employee_salary: employeeSalary || editData?.employee_salary,
-        employee_age: employeeAge || editData?.employee_age,
-        profile_image: employeeImage || editData?.profile_image,
-      }),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedData),
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
-        if (result.modifiedCount) {
+        if (result.success) {
           refetch();
           toast.success(
-            `${editData?.employee_name} product updated successfully`
+            `${editData?.employee_name} updated successfully`
           );
           setEditData(null);
         }
@@ -98,9 +101,25 @@ export default function EmployeeCard({ employee, refetch }) {
           )}
         </div>
         <h2 className="card-title">{employee?.employee_name}</h2>
-        <p>Salary: {employee?.employee_salary}</p>
+        <p>Salary: {employee?.employee_salary} $/year</p>
         <p>Age: {employee?.employee_age}</p>
         <p>Gender: {employee?.gender}</p>
+        {employee?.createdAt && (
+          <div className="card-actions justify-end mt-2">
+            Added On -{" "}
+            <div className="badge badge-outline badge-neutral">
+              {employee?.createdAt}
+            </div>
+          </div>
+        )}
+        {employee?.creator?.name && (
+          <div className="card-actions justify-end my-2">
+            Added by -{" "}
+            <div className="badge badge-outline badge-neutral">
+              {employee?.creator?.name}
+            </div>
+          </div>
+        )}
         <div className="card-actions flex justify-center mt-2">
           <div
             className="btn btn-sm"
@@ -139,7 +158,7 @@ export default function EmployeeCard({ employee, refetch }) {
               </label>
               <h3 className="text-lg font-bold">{editData?.productName}</h3>
               <p>Update Employee data from here</p>
-              <form onSubmit={handleUpdateStock} className="my-2">
+              <form onSubmit={handleUpdateData} className="my-2">
                 <div className="my-4">
                   <label htmlFor="stock">Update Employee Name</label>
                   <input
@@ -148,7 +167,7 @@ export default function EmployeeCard({ employee, refetch }) {
                     className="input input-bordered w-full my-3"
                     id="stock"
                     defaultValue={editData?.employee_name}
-                    onChange={(event) => setEmployeeName(event.target.value)}
+                    onChange={(e) => setEmployeeName(e.target.value)}
                   />
                 </div>
                 <div className="my-4">
@@ -159,7 +178,7 @@ export default function EmployeeCard({ employee, refetch }) {
                     className="input input-bordered w-full my-3"
                     id="stock"
                     defaultValue={editData?.employee_salary}
-                    onChange={(event) => setEmployeeSalary(event.target.value)}
+                    onChange={(e) => setEmployeeSalary(e.target.value)}
                   />
                 </div>
                 <div className="my-4">
@@ -170,7 +189,7 @@ export default function EmployeeCard({ employee, refetch }) {
                     className="input input-bordered w-full my-3"
                     id="stock"
                     defaultValue={editData?.employee_age}
-                    onChange={(event) => setEmployeeAge(event.target.value)}
+                    onChange={(e) => setEmployeeAge(e.target.value)}
                   />
                 </div>
                 {/* <div className="my-4">
@@ -187,7 +206,7 @@ export default function EmployeeCard({ employee, refetch }) {
                     className="input input-bordered w-full my-3"
                     id="stock"
                     defaultValue={editData?.profile_image}
-                    onChange={(event) => setEmployeeImage(event.target.value)}
+                    onChange={(e) => setEmployeeImage(e.target.value)}
                   />
                 </div>
                 <div className="text-right">

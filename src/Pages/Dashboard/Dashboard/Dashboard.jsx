@@ -46,7 +46,7 @@ const Dashboard = () => {
             to="/"
             className="text-xl lg:text-2xl md:text-2xl font-semibold"
           >
-            Settyl
+            <img src={logo} alt="" className="w-12 rounded-full"/>
           </Link>
           <div className="mr-[-3rem] lg:mr-[-84rem] pt-2 md:mr-[-18rem] flex justify-center items-center">
             <li className="list-none">

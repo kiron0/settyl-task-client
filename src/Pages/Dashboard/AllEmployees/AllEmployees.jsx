@@ -17,7 +17,7 @@ export default function AllEmployees() {
         {isLoading ? (
           <Loader />
         ) : employees?.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mx-auto lg:px-4 lg:mt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto lg:px-4 lg:mt-10">
             {employees?.map((employee) => (
               <EmployeeCard
                 key={employee._id}
