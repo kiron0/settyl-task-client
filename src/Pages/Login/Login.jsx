@@ -3,26 +3,26 @@ import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-hot-toast";
-import Loading from "../../Shared/Loading/Loading";
+import Loading from "../../Components/Loading/Loading";
 import auth from "../../Auth/Firebase/Firebase.config";
 import useTitle from "../../Hooks/useTitle";
 
 const Login = () => {
   useTitle("Login");
-  const [signInWithGoogle, gUser, gLoading] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, user, loading] = useSignInWithGoogle(auth);
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/";
 
-  if (gLoading) {
-    return <Loading></Loading>;
-  }
-
-  if (gUser) {
+  if (user) {
     navigate(from, { replace: true });
     toast.success(`Welcome Back, ${auth?.currentUser?.displayName}`, {
       autoClose: 4000,
     });
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (

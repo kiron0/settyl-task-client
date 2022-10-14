@@ -4,6 +4,6 @@ import useTitle from '../../Hooks/useTitle'
 export default function Home() {
   useTitle('Home')
   return (
-    <div>Home</div>
+    <div className='h-screen'>Home</div>
   )
 }
